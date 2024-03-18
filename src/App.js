@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
-
 export default function App() {
   const [time, setTime] = useState("");
   const [alarmTime, setAlarmTime] = useState("");
   const [alarmSet, setAlarmSet] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const updateTime = () => {
     const currentTime = new Date().toLocaleTimeString();
@@ -19,6 +13,11 @@ export default function App() {
       setAlarmSet(false);
     }
   };
+
+  useEffect(() => {
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSetAlarm = () => {
     console.log("alarm set");
