@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
+
 export default function App() {
   const [time, setTime] = useState("");
   const [alarmTime, setAlarmTime] = useState("");
   const [alarmSet, setAlarmSet] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const updateTime = () => {
     const currentTime = new Date().toLocaleTimeString();
@@ -14,22 +20,21 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   const handleSetAlarm = () => {
     console.log("alarm set");
     setAlarmSet(true);
-    setAlarmTime(document.getElementById("alarminput").value);
     console.log(alarmTime);
   };
 
   return (
     <div>
       <h1>Current Time:{time} </h1>
-      <input type="time" id="alarminput" />
+      <input
+        type="time"
+        id="alarminput"
+        value={alarmTime}
+        onChange={(e) => setAlarmTime(e.target.value)}
+      />
       <button onClick={handleSetAlarm}>Set Alarm</button>
     </div>
   );
