@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
 
-function App() {
+export default function App() {
+  const [time, setTime] = useState("");
+  const [alarmTime, setAlarmTime] = useState("");
+  const [alarmSet, setAlarmSet] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const updateTime = () => {
+    const currentTime = new Date().toLocaleTimeString();
+    setTime(currentTime);
+    if (alarmSet && currentTime === alarmTime) {
+      console.log("alarm ringing");
+      window.open("https://google.com", "_blank");
+      setAlarmSet(false);
+    }
+  };
+
+  const handleSetAlarm = () => {
+    console.log("alarm set");
+    setAlarmSet(true);
+    setAlarmTime(document.getElementById("alarminput").value);
+    console.log(alarmTime);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Current Time:{time} </h1>
+      <input type="time" id="alarminput" />
+      <button onClick={handleSetAlarm}>Set Alarm</button>
     </div>
   );
 }
-
-export default App;
